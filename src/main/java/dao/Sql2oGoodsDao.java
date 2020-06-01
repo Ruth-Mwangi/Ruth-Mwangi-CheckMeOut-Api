@@ -27,13 +27,13 @@ public class Sql2oGoodsDao implements GoodsDao {
     @Override
     public void addItem(Goods good) {
         try (Connection con=sql2o.open()){
-            String sql ="INSERT INTO staff (code,name,price) VALUES (:code,:name,:price) ";
+            String sql ="INSERT INTO goods (code,name,price) VALUES (:code,:name,:price) ";
 
             int id=(int) con.createQuery(sql,true)
                     .bind(good)
                     .executeUpdate()
                     .getKey();
-            good.setId(String.valueOf(id));
+            good.setId(id);
 
 
         }catch (Sql2oException e){

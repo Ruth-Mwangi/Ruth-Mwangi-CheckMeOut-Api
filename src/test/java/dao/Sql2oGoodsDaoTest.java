@@ -34,9 +34,11 @@ public class Sql2oGoodsDaoTest {
         assertEquals(good.getName(),"notebook");
     }
 
-    @Test
-    public void itemIsAdded() {
-        Goods good=new Goods("6006323598471","lotion","500");
-
-    }
+//    @Test
+//    public void itemIsAdded() {
+//        Goods good=new Goods("6006323598471","lotion",500);
+//        sql2oGoodsDao.addItem(good);
+//        assertEquals(good.getId(),7);
+//
+//    }
 }
