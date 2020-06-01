@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import dao.Sql2oGoodsDao;
+import models.Goods;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import spark.ModelAndView;
@@ -32,12 +33,10 @@ public class App {
         Connection conn;
         Gson gson = new Gson();
 
+
         staticFileLocation("/public");
 
-//        get("/",(request, response) -> {
-//            Map<String,Object> model=new HashMap<String, Object>();
-//            return new ModelAndView(model,"hello.hbs");
-//        },new HandlebarsTemplateEngine());
+
 
         get("/goods/:id", "application/json", (request, response) -> {
             //int id=Integer.parseInt(request.params("id"));
@@ -45,12 +44,12 @@ public class App {
             System.out.println(code);
             return gson.toJson(sql2oGoodsDao.getGood(code));
         });
-//        post("/users/new","application/json",(request, response) -> {
-//            Users user=gson.fromJson(request.body(),Users.class);
-//            sql2oUsersDao.add(user);
-//            response.status(201);
-//            return gson.toJson(user);
-//        });
+        post("/item/new","application/json",(request, response) -> {
+            Goods good=gson.fromJson(request.body(),Goods.class);
+            sql2oGoodsDao.addItem(good);
+            response.status(201);
+            return gson.toJson(good);
+        });
 
 
         after((request, response) ->{
