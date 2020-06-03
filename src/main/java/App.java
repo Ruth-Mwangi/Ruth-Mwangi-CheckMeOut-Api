@@ -4,16 +4,14 @@ import models.Goods;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import spark.ModelAndView;
-import spark.route.HttpMethod;
+
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
 
-//import static spark.Spark.get;
 import static spark.Spark.*;
 
-//import static spark.route.HttpMethod.get;
 
 public class App {
 
@@ -36,7 +34,11 @@ public class App {
 
         staticFileLocation("/public");
 
-
+        // do this
+        get("/","text/html",(request, response) -> {
+            Map<String,Object> model=new HashMap<>();
+            return new ModelAndView(model,"hello.hbs");
+        },new HandlebarsTemplateEngine());
 
         get("/goods/:id", "application/json", (request, response) -> {
             //int id=Integer.parseInt(request.params("id"));
