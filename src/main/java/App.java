@@ -27,6 +27,7 @@ public class App {
         port(getHerokuAssignedPort());
         String connectionString = "jdbc:postgresql://ec2-3-222-150-253.compute-1.amazonaws.com:5432/d6hqhvhegco7o0";
         Sql2o sql2o = new Sql2o(connectionString, "rzgxxgujegmach", "b209e0e27738362cc973be7c6c8b2e7b8667a973d1af3d7aa04fc482245ffbcd");
+
         Sql2oGoodsDao sql2oGoodsDao = new Sql2oGoodsDao(sql2o);
         Connection conn;
         Gson gson = new Gson();
@@ -35,28 +36,26 @@ public class App {
         staticFileLocation("/public");
 
         // do this
-        get("/","text/html",(request, response) -> {
+        get("/","application/json",(request, response) -> {
             Map<String,Object> model=new HashMap<>();
-            return new ModelAndView(model,"hello.hbs");
+            return new ModelAndView(model,"home.hbs");
         },new HandlebarsTemplateEngine());
 
         get("/goods/:id", "application/json", (request, response) -> {
             //int id=Integer.parseInt(request.params("id"));
             String code=request.params("id");
             System.out.println(code);
+            response.type("application/json");
             return gson.toJson(sql2oGoodsDao.getGood(code));
         });
         post("/item/new","application/json",(request, response) -> {
             Goods good=gson.fromJson(request.body(),Goods.class);
             sql2oGoodsDao.addItem(good);
             response.status(201);
+            response.type("application/json");
             return gson.toJson(good);
         });
 
-
-        after((request, response) ->{
-            response.type("application/json");
-        });
 
 
     }
